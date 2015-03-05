@@ -286,11 +286,11 @@ class Scanner:
         if not scheme:
             self.url = "http://" + self.url
             report.status("No HTTP/HTTPS provided. Assuming HTTP...")
-        if path.endswith("asp" or "aspx"):
+        if path.endswith("asp") or path.endswith("aspx"):
             report.error("You are not scanning a PHP website")
             sys.exit()
-        if path.endswith("txt" or "php"):
-            self.url = re.findall(re.compile('(.+?)/[A-Za-z0-9]+\.txt|php'),self.url)[0]
+        if path.endswith("txt") or path.endswith("php"):
+            self.url = re.findall(re.compile('(.+?)/[A-Za-z0-9]+\.(?:txt|php)'),self.url)[0]
         if self.url.endswith("/") :
             self.url = self.url[:-1]
 
@@ -813,7 +813,7 @@ class JooScan:
         q = Queue.Queue(self.queue_num)        
         # Spawn all threads into code
         for u in range(self.thread_num):
-            t = ThreadScanner(self.url,self.pluginPath,"/",self.pluginsFound,self.notExistingCode,self.notExistingCode,q)
+            t = ThreadScanner(self.url,self.pluginPath,"/",self.pluginsFound,self.notExistingCode,self.notValidLen,q)
             t.daemon = True
             t.start()
         # Add all plugins to the queue
