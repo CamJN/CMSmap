@@ -1,4 +1,16 @@
 #!/usr/bin/python
+
+import ssl
+from functools import wraps
+def sslwrap(func):
+    @wraps(func)
+    def bar(*args, **kw):
+        kw['ssl_version'] = ssl.PROTOCOL_TLSv1
+        return func(*args, **kw)
+    return bar
+
+ssl.wrap_socket = sslwrap(ssl.wrap_socket)
+
 import smtplib, base64, os, sys, getopt, urllib2, urllib, re, socket, time, httplib, tarfile
 import itertools, urlparse, threading, Queue, multiprocessing, cookielib, datetime, zipfile
 import platform, signal
